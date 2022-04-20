@@ -1,24 +1,18 @@
 //
-//  NewsCell.swift
+//  NewsReactions.swift
 //  VKClient
 //
-//  Created by danuhaha on 26.10.2021.
+//  Created by danuhaha on 11.04.2022.
 //
 
 import UIKit
 
-class NewsCell: UITableViewCell {
-
-    @IBOutlet weak var avatarView: UIView!
-    @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var groupNameLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-
-    @IBOutlet weak var postTextLabel: UILabel!
-
-    @IBOutlet weak var postImagevView: UIImageView!
+class NewsReactions: UITableViewCell {
 
     @IBOutlet weak var likeCounterLabel: UILabel!
+    @IBOutlet weak var viewCounterLabel: UILabel!
+    @IBOutlet weak var repostCounterLabel: UILabel!
+    @IBOutlet weak var commentCounerLabel: UILabel!
 
     var liked = false
     var likeCount = 0
@@ -26,36 +20,29 @@ class NewsCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        avatarImageView.layer.cornerRadius = 25
-        avatarView.layer.cornerRadius = 25
-        //avatarView.layer.shadowColor = UIColor.black.cgColor
-        //avatarView.layer.shadowRadius = CGFloat(1)
-        //avatarView.layer.shadowOpacity = 1
-        //avatarView.layer.shadowOffset = CGSize(width: 2, height: 2)
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        avatarImageView.image = nil
-        groupNameLabel.text = nil
-        dateLabel.text = nil
-        postTextLabel.text = nil
-        postImagevView.image = nil
-        liked = false
-        likeImage = UIImage(systemName: "heart")
-        likeCount = 0
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 
+    override func prepareForReuse() {
+        liked = false
+        likeImage = UIImage(systemName: "heart")
+    }
+
     func configure(post: Post) {
-        avatarImageView.image = post.group.avatar
-        groupNameLabel.text = post.group.title
-        dateLabel.text = post.date
-        postTextLabel.text = post.postText
-        postImagevView.image = post.postImage
+        liked = post.isLiked
+        likeCount = post.likeCount
+        if post.isLiked {
+            likeImage = UIImage(systemName: "heart.fill")
+        } else {
+            likeImage = UIImage(systemName: "heart")
+        }
+        likeCounterLabel.text = "\(post.likeCount)"
+        commentCounerLabel.text = "\(post.commentCount)"
+        repostCounterLabel.text = "\(post.repostCount)"
+        viewCounterLabel.text = "\(post.viewCount)"
     }
 
     @IBAction func pressLikeButton(_ sender: Any) {
@@ -82,3 +69,4 @@ class NewsCell: UITableViewCell {
         likeCounterLabel.text = "\(likeCount)"
     }
 }
+

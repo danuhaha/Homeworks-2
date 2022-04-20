@@ -16,6 +16,7 @@ class ProfileViewController: UIViewController {
     var postsArray = [Post]()
     var user = User()
 
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var avatarImageView: UIView!
@@ -31,11 +32,13 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        getFriendsInitialResponse()
-        getPhotosInitialResponse()
-        getUserInitialResponse()
-        fillPostsArray()
+        DispatchQueue.main.async {
+            self.getFriendsInitialResponse()
+            self.getPhotosInitialResponse()
+            self.getUserInitialResponse()
+            self.getWallInitialResponse()
+        }
+    
 
         friendsCollectionView.dataSource = self
         friendsCollectionView.delegate = self
@@ -47,12 +50,19 @@ class ProfileViewController: UIViewController {
 
         postsTableView.delegate = self
         postsTableView.dataSource = self
-        postsTableView.register(UINib(nibName: newsCell, bundle: nil), forCellReuseIdentifier: reuseIdentifierNewsCell)
+        postsTableView.register(UINib(nibName: newsHeaderCell, bundle: nil), forCellReuseIdentifier: reuseIdentifierNewsHeaderCell)
+        postsTableView.register(UINib(nibName: newsTextCell, bundle: nil), forCellReuseIdentifier: reuseIdentifierNewsTextCell)
+        postsTableView.register(UINib(nibName: newsPhotoCell, bundle: nil), forCellReuseIdentifier: reuseIdentifierNewsPhotoCell)
+        postsTableView.register(UINib(nibName: newsReactionsCell, bundle: nil), forCellReuseIdentifier: reuseIdentifierNewsReactionsCell)
+        postsTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
         postsTableView.isScrollEnabled = false
         photosCollectionView.isScrollEnabled = false
 
     }
+
+
+
 
 
 }
